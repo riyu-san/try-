@@ -4,6 +4,27 @@
   background-color: #be5819;
   display: flex;
   flex-direction: row;
+  position: relative;
+}
+
+/* Overlay element */
+.overlay {
+  position: fixed; /* Covers the entire screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dark background for contrast */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  display: none; /* Hide by default */
+  z-index: 999; /* Ensure it sits on top of other content */
+}
+
+/* Show overlay only on mobile and tablet screens */
+@media only screen and (max-width: 900px) {
+  .overlay.active {
+    display: block; /* Show when menu is open */
+  }
 }
 
 .navbar .leftSide {
@@ -32,23 +53,9 @@
   text-decoration: none;
   margin: 20px;
   position: relative;
-}
-
-.navbar .rightSide a::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 0;
-  height: 2px; /* Adjust the height of the underline */
-  background: white;
-  transition: width 0.3s ease, left 0.3s ease;
-}
-
-.navbar .rightSide a:hover::after,
-.navbar .rightSide a.active::after {
-  width: 100%;
-  left: 0;
+  padding: 10px; /* Add padding for better hover effect */
+  border-radius: 5px; /* Optional: Add border radius for rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 
 .navbar .rightSide button {
@@ -62,67 +69,79 @@
   font-size: 40px;
 }
 
-.navbar #open {
-  padding-left: 0px;
-}
-
-.navbar #open img {
-  display: none;
-}
-
-.navbar #close img {
-  display: inherit;
-}
-
-.navbar #open .hiddenLinks {
+/* Styling for the hidden links */
+.navbar .hiddenLinks {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  right: 20px;
+  width: calc(100% - 40px);
+  background-color: #be5819;
   display: flex;
-  flex-direction: row;
-  margin-left: 30px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-20px);
+  z-index: 1000;
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 20px 0;
 }
 
-.navbar #close .hiddenLinks {
-  display: none;
+/* Show the menu */
+.navbar .hiddenLinks.open {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.navbar #open .hiddenLinks a {
-  display: inline-block;
-  width: auto;
+/* Define a suitable background color for active and hover states of hidden links */
+.navbar .hiddenLinks a {
+  position: relative; /* Position relative for pseudo-element positioning */
+  color: white;
   margin: 5px;
-  color: white; /* Ensure the text color matches */
   text-decoration: none;
-  position: relative;
+  font-size: 24px; /* Increase font size for better readability on mobile */
+  padding: 10px; /* Add padding for a better visual effect */
+  border-radius: 5px; /* Optional: Add border radius for rounded corners */
+  width: 90%; /* Make each link occupy 90% of the hiddenLinks container */
+  text-align: center; /* Center the text inside the link */
+  overflow: hidden; /* Ensure the pseudo-element doesn't overflow */
+  transition: color 0.3s ease; /* Smooth transition for text color */
 }
 
-.navbar #open .hiddenLinks a::after {
+/* Create the hover and active effect with ::before */
+.navbar .hiddenLinks a::before {
   content: '';
   position: absolute;
+  top: 50%;
   left: 50%;
-  bottom: 0;
-  width: 0;
-  height: 2px; /* Adjust the height of the underline */
-  background: white;
-  transition: width 0.3s ease, left 0.3s ease;
+  width: 100%; /* Full width of the link */
+  height: 100%; /* Full height of the link */
+  background-color: #f5a623; /* Background color for hover effect */
+  transform: translate(-50%, -50%); /* Center the background */
+  z-index: -1; /* Ensure it stays behind the text */
+  transition: opacity 0.3s ease; /* Smooth transition for the background */
+  opacity: 0; /* Hidden by default */
 }
 
-.navbar #open .hiddenLinks a:hover::after,
-.navbar #open .hiddenLinks a.active::after {
-  width: 100%;
-  left: 0;
+/* Show the background on hover and active */
+.navbar .hiddenLinks a:hover::before,
+.navbar .hiddenLinks a.active::before {
+  opacity: 1; /* Show background on hover and when active */
 }
 
+/* Keep the text color consistent */
+.navbar .hiddenLinks a:hover,
+.navbar .hiddenLinks a.active {
+  color: white; /* Ensure text color is readable */
+}
+
+/* Media Queries */
 @media only screen and (max-width: 900px) {
   .navbar .rightSide a {
-    width: 70px;
-  }
-
-  .navbar .leftSide {
-    padding-left: 50px;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .navbar .rightSide a {
-    display: none;
+    display: none; /* Hide desktop links */
   }
 
   .navbar .rightSide {
@@ -131,16 +150,22 @@
   }
 
   .navbar .rightSide button {
-    display: inherit;
+    display: inherit; /* Show the reorder button */
+  }
+
+  .navbar .hiddenLinks {
+    left: 10px; /* Adjust for smaller side margin */
+    right: 10px; /* Adjust for smaller side margin */
+    width: calc(100% - 20px); /* Adjust width considering left and right margins */
   }
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 901px) {
   .navbar .rightSide button {
-    display: none;
+    display: none; /* Hide the reorder button */
   }
 
-  .hiddenLinks {
-    display: none;
+  .navbar .hiddenLinks {
+    display: none; /* Hide the hidden links on larger screens */
   }
 }
