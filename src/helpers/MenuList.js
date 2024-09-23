@@ -26,7 +26,7 @@ export const MenuList = [
     image: CoconutBlancMange,
     price: 99.00,
   },
-  {
+  { 
     name: "Cupcake",
     image: Dessert,
     price: 49.00,

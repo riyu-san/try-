@@ -1,12 +1,13 @@
 import React from "react";
 import "../styles/About.css";
-
+import Layeredtrifledessert from "../assets/layeredtrifledessert.jpg";
 
 function About() {
   return (
     <div className="about">
       <div
         className="aboutTop"
+        style={{ backgroundImage: `url(${Layeredtrifledessert})` }}
       ></div>
       <div className="aboutBottom">
         <h1> ABOUT US</h1>
